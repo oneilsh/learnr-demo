@@ -1,0 +1,9 @@
+---
+title: "Esquisse"
+---
+
+
+```{r setup}
+library(esquisse)
+esquisser(diamonds)
+```

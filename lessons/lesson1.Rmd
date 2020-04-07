@@ -1,0 +1,119 @@
+---
+title: "Demo R Tutorial"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+
+source("utils.R")
+
+checker <- function(label,
+                    user_code,
+                    solution_code,
+                    check_code,
+                    envir_result,
+                    evaluate_result,
+                    envir_prep,
+                    last_value,
+                    ...) {
+  check_function <- eval(parse(text = check_code), envir_prep)
+  check_function(last_value, user_code)
+}
+
+knitr::opts_chunk$set(exercise.checker = checker)
+```
+
+# LearnR + Binder Demo
+
+## What is this?
+
+This doc details an R tutorial written using the `learnr` package for R, accessed via a service knows as [mybinder](https://mybinder.org). MyBinder is a free and publicly available installation of [BinderHub](https://binderhub.readthedocs.io/en/latest/); as a result, the computational resources available here are limited and data saved will not persist for long. (Some institutions such as Berkeley, CU Boulder, and recently Oregon State deploy similar technology without these limitations.)
+
+### Running code
+
+Users can run code and see the results:
+
+```{r overview1, exercise=TRUE, warning=FALSE, out.width='80%', fig.asp=0.33}
+library(ggplot2)
+ggplot(iris) +
+  geom_point(aes(x = Petal.Length, y = Petal.Width, color = Sepal.Length/Sepal.Width)) +
+  facet_wrap(~Species)
+```
+
+Simple math (this one runs automatically but you can still change the code and run it):
+
+```{r overview2, exercise=TRUE, exercise.eval = TRUE}
+3 + 7
+```
+
+### Exercises
+
+And we can build exercises. Write an expression that results in an output of 30, using the numbers 40 and 7 at least once. (Try a few incorrect answers as well.)
+
+```{r overview3, exercise=TRUE}
+# Write your code here!
+
+
+```
+
+```{r overview3-hint-1}
+# one possible solution:
+40 - (...)
+```
+
+```{r overview3-hint-2}
+# one possible solution:
+40 - (7 + ...)
+```
+
+
+```{r overview3-solution}
+# one possible solution:
+40 - (7 + 3)
+```
+
+```{r overview3-check}
+function(student_answer, student_code) {
+  if(student_answer == 30 && 
+     grepl("40", student_code) &&
+     grepl("7", student_code)) {
+    return(list(
+      correct = TRUE,
+      message = "Nice work!"
+    ))
+  } else {
+    return(list(
+      correct = FALSE,
+      message = "Sorry, try again. Make sure you use the numbers 40 and 7 in your code."
+    ))
+  }
+}
+```
+
+### More Examples
+
+Multiple-choice questions are also supported. More sophisticated examples can be found here:
+
+```{r echo=FALSE}
+examples()
+```
+
+
+## Dashboards
+
+The same technology can be used to build and deploy data dashboards; for an example (from a standard demo) click [here](http://mybinder.org/v2/gh/oneilsh/r/master?urlpath=shiny/bus-dashboard/).
+
+A fairly neat option for data exploration is provided by the [`esquisse`](https://dreamrs.github.io/esquisse/index.html) library; click [here](http://mybinder.org/v2/gh/oneilsh/r/master?urlpath=shiny/esquisse.Rmd) to see an interactive demo. 
+
+## And an IDE
+
+While `learnr` produces this slick learning interface, it's not the *actual* interface commonly used for developing and running code and analyses, known as RStudio. You can see the RStudio interface and brose both the lesson and dashboard files by clicking [here](http://mybinder.org/v2/gh/oneilsh/r/master?urlpath=rstudio).
+
+It will be useful to consider the pros and cons of learning via this "on-rails" experience vs. within the RStudio IDE itself.
+
+
