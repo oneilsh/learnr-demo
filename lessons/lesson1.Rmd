@@ -32,7 +32,7 @@ knitr::opts_chunk$set(exercise.checker = checker)
 
 ## What is this?
 
-This doc details an R tutorial written using the `learnr` package for R, accessed via a service knows as [mybinder](https://mybinder.org). MyBinder is a free and publicly available installation of [BinderHub](https://binderhub.readthedocs.io/en/latest/); as a result, the computational resources available here are limited and data saved will not persist for long. (Some institutions such as Berkeley, CU Boulder, and recently Oregon State deploy similar technology without these limitations.)
+This doc details an R tutorial written using the `learnr` package for R, accessed via a service knows as [mybinder](https://mybinder.org). MyBinder is a free and publicly available installation of [BinderHub](https://binderhub.readthedocs.io/en/latest/); as a result, the computational resources available here are limited and data saved will not persist for long.
 
 ### Running code
 
@@ -104,7 +104,12 @@ examples()
 ```
 
 
-## And an IDE
+## Sections and Other Options
+
+Many features of the lesson are configurable, including the "progressive reveal" feature shown here. It's possible to turn that off, or to require that students
+run certain exercises or code blocks before they can continue. Student progress is also tracked so that students can return to a lesson from where they left off.
+
+### learnr vs RStudio IDE
 
 While `learnr` produces this slick learning interface, it's not the *actual* interface commonly used for developing and running code and analyses, known as RStudio. You can see the RStudio interface and brose both the lesson and dashboard files by clicking [here](http://mybinder.org/v2/gh/oneilsh/r/master?urlpath=rstudio).
 

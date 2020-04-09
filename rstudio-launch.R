@@ -1,7 +1,7 @@
 lessons_selected <- rstudioapi::showQuestion("Welcome",
-                        "Welcome to RStudio, an integrated development environment (IDE) for R. \n\nRStudio can be used to edit code, run lessons (with learnr) and dashboards (with shiny). \n\nWhich would you like to try?",
-                        ok = "Show Lessons/Dashboards",
-                        cancel = "Open RStudio")
+                        "Welcome to RStudio, an integrated development environment (IDE) for R. Note that if this page has been launched from a public service (like mybinder.org), changes made here may not persist. Privately hosted services usually don't have this restriction.\n\nRStudio can be used to edit code as well as run lessons (with learnr) and dashboards (with shiny). \n\nWhich would you like to try?",
+                        ok = "See Lessons & Dashboards",
+                        cancel = "Open RStudio IDE")
 
 if(lessons_selected) {
   applaunch <- rstudioapi::selectFile(label = "Select Lesson/Dashboard",
