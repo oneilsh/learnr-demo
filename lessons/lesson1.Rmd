@@ -104,16 +104,10 @@ examples()
 ```
 
 
-## Dashboards
-
-The same technology can be used to build and deploy data dashboards; for an example (from a standard demo) click [here](http://mybinder.org/v2/gh/oneilsh/r/master?urlpath=shiny/bus-dashboard/).
-
-A fairly neat option for data exploration is provided by the [`esquisse`](https://dreamrs.github.io/esquisse/index.html) library; click [here](http://mybinder.org/v2/gh/oneilsh/r/master?urlpath=shiny/esquisse.Rmd) to see an interactive demo. 
-
 ## And an IDE
 
 While `learnr` produces this slick learning interface, it's not the *actual* interface commonly used for developing and running code and analyses, known as RStudio. You can see the RStudio interface and brose both the lesson and dashboard files by clicking [here](http://mybinder.org/v2/gh/oneilsh/r/master?urlpath=rstudio).
 
-It will be useful to consider the pros and cons of learning via this "on-rails" experience vs. within the RStudio IDE itself.
+It is useful to consider the pros and cons of learning via this "on-rails" experience vs. within the RStudio IDE itself.
 
 
