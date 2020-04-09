@@ -61,12 +61,12 @@ And we can build exercises. Write an expression that results in an output of 30,
 
 ```
 
-```{r overview3-hint-1}
+```{r overview3-hint-1, eval=FALSE}
 # one possible solution:
 40 - (...)
 ```
 
-```{r overview3-hint-2}
+```{r overview3-hint-2, eval=FALSE}
 # one possible solution:
 40 - (7 + ...)
 ```
