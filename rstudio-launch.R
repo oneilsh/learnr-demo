@@ -1,5 +1,5 @@
 lessons_selected <- rstudioapi::showQuestion("Welcome",
-                        "Welcome to RStudio, an integrated development environment (IDE) for R. Note that if this page has been launched from a public service (like mybinder.org), changes made here may not persist. Privately hosted services usually don't have this restriction.\n\nRStudio can be used to edit code as well as run lessons (with learnr) and dashboards (with shiny). \n\nWhich would you like to try?",
+                        "Welcome to RStudio, an open-source integrated development environment (IDE) for R. \n\nRStudio can also help run lessons (with the learnr package) and dashboards (with the shiny package). \n\nWhich would you like to try?",
                         ok = "See Lessons & Dashboards",
                         cancel = "Open RStudio IDE")
 
