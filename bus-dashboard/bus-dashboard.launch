@@ -1,0 +1,1 @@
+shiny::runApp(appDir = "~/learnr-demo/bus-dashboard/", launch.browser = TRUE)

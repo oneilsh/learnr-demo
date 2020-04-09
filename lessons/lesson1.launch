@@ -1,0 +1,3 @@
+library(learnr)
+initialize_tutorial()
+rmarkdown::run(file = "lesson1.Rmd", dir = "~/learnr-demo/lessons", shiny_args = list(launch.browser = TRUE))
