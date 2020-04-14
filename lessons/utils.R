@@ -2,12 +2,12 @@
 library(htmltools)
 
 
-note_warning <- function(contents) { note(contents, icon = "fa fa-exclamation-triangle", type = "alert alert-warning") }
-note_danger <- function(contents) { note(contents, icon = "fa fa-radiation", type = "alert alert-danger") }
-note_interesting <- function(contents) { note(contents, icon = "fa fa-brain", type = "alert alert-success") }
+note_warning <- function(contents) { note(contents, icon = "fa fa-bell", type = "alert alert-warning") }
+note_danger <- function(contents) { note(contents, icon = "fas fa-exclamation-triangle", type = "alert alert-danger") }
+note_interesting <- function(contents) { note(contents, icon = "fas fa-lightbulb", type = "alert alert-success") }
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 note <- function(contents, icon = "fa fa-comment", type = "alert alert-info") {
-  htmltools::tagList(rmarkdown::html_dependency_font_awesome())
   div(class = type,
       style = "display: block; width: 100%; padding: 8px;",
       div(style = "float: left; width: 45px",

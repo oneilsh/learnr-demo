@@ -1,9 +1,9 @@
 ---
-title: "Interactive Intro to R"
+title: "R: An Interactive Tutorial"
 output: 
   learnr::tutorial:
     progressive: true
-    allow_skip: false
+    allow_skip: true
 runtime: shiny_prerendered
 ---
 
@@ -11,7 +11,6 @@ runtime: shiny_prerendered
 library(learnr)
 
 source("utils.R")
-
 
 checker <- function(label,
                     user_code,
@@ -29,20 +28,43 @@ checker <- function(label,
 knitr::opts_chunk$set(exercise.checker = checker)
 ```
 
-```{r}
-#```{r child = 'intro_r_background.Rmd'}
-#```
+```{css, echo=FALSE, include=knitr::is_html_output()}
+@media print {
+   .topicsContainer {
+       display: none;
+   }
+   .topics {
+     width: 100%;
+     overflow: visible;
+   }
+}
 ```
 
-## What is this? 
+## Where Am I? 
 
-The document you're reading is an introduction to programming and data analysis with the R programming language. It's an *interactive* document, where you'll be able to try out R code for yourself. Here, give it a shot to see what `7 + 11` is:
+The document you're reading is an introduction to coding and data analysis with the R programming language. We'll learn more about R in future sections, but for now know that it's a powerful (if occasionally esoteric) language designed for data analysis. It's remarkably flexible and is often used to generate interactive data dashboards and reports - like this one!
+
+### Running Code
+
+Since this is an *interactive* document, you'll be able to try out R code for yourself. Here, give it a shot to see what `7 + 11` is:
 
 ```{r lessons_all_1, exercise=TRUE}
 7 + 11
 ```
 
-Although we're not going to jump into code just yet, this affords us some interesting possibilities. For example, we can run an *exercise*, and you can attempt to solve it: Try writing an expression that results in an output of 30, using the numbers 40 and 7 at least once. (Try a few incorrect answers as well.)
+Later we'll learn about creating plots:
+
+```{r overview1, exercise=TRUE, warning=FALSE, out.width='80%', fig.asp=0.33}
+library(ggplot2)
+ggplot(iris) +
+  geom_point(aes(x = Petal.Length, y = Petal.Width, color = Sepal.Length/Sepal.Width)) +
+  facet_wrap(~Species)
+```
+
+
+### Exercises
+
+Although we're not going to jump into learning R just yet, these features afford us some interesting possibilities. For example, we can run an *exercise*, and you can attempt to solve it: Try writing an expression that results in an output of 30, using the numbers 40 and 7 at least once. (Try a few incorrect answers as well.)
 
 ```{r overview3, exercise=TRUE}
 # Write your code here!
@@ -75,33 +97,47 @@ function(student_answer, student_code) {
       correct = TRUE,
       message = "Nice work!"
     ))
-  } else {
+  } else if(student_answer != 30) {
     return(list(
       correct = FALSE,
-      message = "Sorry, try again. Make sure you use the numbers 40 and 7 in your code."
+      message = "Sorry, your answer doesn't output 30."
+    ))
+  } else if(!grepl("40", student_code)) {
+    return(list(
+      correct = FALSE,
+      message = "Sorry, your answer doesn't include 40 anywhere."
+    ))
+  } else if(!grepl("7", student_code)) {
+    return(list(
+      correct = FALSE,
+      message = "Sorry, your answer doesn't include 7 anywhere."
+    ))
+  } else {
+      return(list(
+      correct = FALSE,
+      message = "Something isn't right, but I'm not sure exactly what it is! Maybe the hints will help."
     ))
   }
 }
 ```
 
-Sometimes sections will be hidden until you click "Continue":
 
-### Like this
+### Making Notes and Printing
 
-Like this.
+There's another interesting feature we can take advantage of. You can run the `note()` function in any code block to add a quick note. Making notes and trying things out are important for the learning process, and you'll be referring back to notes and old code frequently. (Let's face it, there's just too much to memorize the details of!)
 
-## Making Notes and Printing
-
-There's another interesting feature we can take advantage of. You can run the `note()` function in any code block to add a quick note: 
+Try running this code:
 
 ```{r notetest, exercise=TRUE}
 note("You can add notes along with other code.")
 7 + 3
-
-note("Neat!")
 ```
 
-The notes themselves can be composed in [Markdown](https://www.markdownguide.org/cheat-sheet/), if you'd like to add more complex formatting:
+We wouldn't recommend using this function in exercises though, since it could interfere with the process that checks answers. 
+
+### Markdown Notes and More
+
+The notes themselves can be composed in [Markdown](https://www.markdownguide.org/cheat-sheet/), if you'd like to add more complex formatting. (Note that we still have the form of `note("message")`, it's just that `"message"` is broken over multiple lines.)
 
 ```{r notetest2, exercise=TRUE}
 note("
@@ -113,7 +149,22 @@ This is a markdown note. You can write lists, for examples:
 * two
 * three
 
-And **bold** or *italic* text.
+And **bold** text, *italic* text, and `text in code-format`. 
 ")
 ```
 
+We've designed a few other "note" functions, if you'd like to have a few different styles to choose from.
+
+```{r notetypes, exercise=TRUE}
+note_warning("This is a warning-style note.")
+note_danger("Beware!")
+note_interesting("A nice soothing green color, don't you think?")
+```
+
+### Printing
+
+The code changes you make and notes you write are only saved in the *browser cache*; you can see this by clicking on the "Start Over" link in the topic menu to the left, which will clear all of your changes to this tutorial. 
+
+As a result, you may want to print each section (to PDF, or on paper) as you complete it. You can use your browser's Print feature for that, and at the end of each section we'll include a button to remind you:
+
+<input type="button" onclick="window.print()" value="Print This Section" class="btn btn-info"/>
