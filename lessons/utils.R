@@ -1,5 +1,25 @@
 
 library(htmltools)
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+
+
+note_warning <- function(contents) { note(contents, icon = "fa fa-exclamation-triangle", type = "alert alert-warning") }
+note_danger <- function(contents) { note(contents, icon = "fa fa-radiation", type = "alert alert-danger") }
+note_interesting <- function(contents) { note(contents, icon = "fa fa-brain", type = "alert alert-success") }
+
+note <- function(contents, icon = "fa fa-comment", type = "alert alert-info") {
+  div(class = type,
+      style = "display: block; width: 100%; padding: 8px;",
+      div(style = "float: left; width: 45px",
+          tags$span(tags$i(class=icon), style = "font-size: 180%; margin-left: 8px")
+         ),
+      div(style = "margin-left: 45px; margin-top: 10px;",
+          HTML(markdown::markdownToHTML(text = stringr::str_trim(contents), 
+                                        fragment.only = TRUE)
+                                        )
+         )
+      )
+}
 
 # Generate HTML for a 4-wide bootstrap thumbnail
 thumbnail <- function(title, img, href, source, caption = TRUE) {

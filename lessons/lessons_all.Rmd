@@ -1,0 +1,107 @@
+---
+title: "Demo R Tutorial"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+
+source("utils.R")
+
+
+
+checker <- function(label,
+                    user_code,
+                    solution_code,
+                    check_code,
+                    envir_result,
+                    evaluate_result,
+                    envir_prep,
+                    last_value,
+                    ...) {
+  check_function <- eval(parse(text = check_code), envir_prep)
+  check_function(last_value, user_code)
+}
+
+knitr::opts_chunk$set(exercise.checker = checker)
+```
+
+```{r child = 'intro_r_background.Rmd'}
+```
+
+# Interactive Intro to R
+
+## What is this?
+
+The document you're reading is an introduction to programming and data analysis with the R programming language. It's an *interactive* document, where you'll be able to try out R code for yourself. Here, give it a shot to see what `7 + 11` is:
+
+```{r lessons_all_1, exercise=TRUE}
+7 + 11
+```
+
+Although we're not going to jump into code just yet, this affords us some interesting possibilities. For example, we can run an *exercise*, and you can attempt to solve it: Try writing an expression that results in an output of 30, using the numbers 40 and 7 at least once. (Try a few incorrect answers as well.)
+
+```{r overview3, exercise=TRUE}
+# Write your code here!
+
+
+```
+
+```{r overview3-hint-1, eval=FALSE}
+# one possible solution:
+40 - (...)
+```
+
+```{r overview3-hint-2, eval=FALSE}
+# one possible solution:
+40 - (7 + ...)
+```
+
+
+```{r overview3-solution}
+# one possible solution:
+40 - (7 + 3)
+```
+
+```{r overview3-check}
+function(student_answer, student_code) {
+  if(student_answer == 30 && 
+     grepl("40", student_code) &&
+     grepl("7", student_code)) {
+    return(list(
+      correct = TRUE,
+      message = "Nice work!"
+    ))
+  } else {
+    return(list(
+      correct = FALSE,
+      message = "Sorry, try again. Make sure you use the numbers 40 and 7 in your code."
+    ))
+  }
+}
+```
+
+Sometimes subsections will be hidden until you click "Continue":
+
+### Making Notes and Printing
+
+There's another interesting feature we can take advantage of. 
+
+```{r}
+alert("## This is a note")
+note("
+# Markdown note
+
+This is a markdown note. You can write lists, for examples:
+
+* one
+* two
+* three
+
+And **bold** or *italic* text.
+")
+```
