@@ -1,6 +1,5 @@
 
 library(htmltools)
-htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 
 note_warning <- function(contents) { note(contents, icon = "fa fa-exclamation-triangle", type = "alert alert-warning") }
@@ -8,6 +7,7 @@ note_danger <- function(contents) { note(contents, icon = "fa fa-radiation", typ
 note_interesting <- function(contents) { note(contents, icon = "fa fa-brain", type = "alert alert-success") }
 
 note <- function(contents, icon = "fa fa-comment", type = "alert alert-info") {
+  htmltools::tagList(rmarkdown::html_dependency_font_awesome())
   div(class = type,
       style = "display: block; width: 100%; padding: 8px;",
       div(style = "float: left; width: 45px",

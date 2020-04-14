@@ -1,9 +1,9 @@
 ---
-title: "Demo R Tutorial"
+title: "Interactive Intro to R"
 output: 
   learnr::tutorial:
     progressive: true
-    allow_skip: true
+    allow_skip: false
 runtime: shiny_prerendered
 ---
 
@@ -11,7 +11,6 @@ runtime: shiny_prerendered
 library(learnr)
 
 source("utils.R")
-
 
 
 checker <- function(label,
@@ -30,12 +29,12 @@ checker <- function(label,
 knitr::opts_chunk$set(exercise.checker = checker)
 ```
 
-```{r child = 'intro_r_background.Rmd'}
+```{r}
+#```{r child = 'intro_r_background.Rmd'}
+#```
 ```
 
-# Interactive Intro to R
-
-## What is this?
+## What is this? 
 
 The document you're reading is an introduction to programming and data analysis with the R programming language. It's an *interactive* document, where you'll be able to try out R code for yourself. Here, give it a shot to see what `7 + 11` is:
 
@@ -85,14 +84,26 @@ function(student_answer, student_code) {
 }
 ```
 
-Sometimes subsections will be hidden until you click "Continue":
+Sometimes sections will be hidden until you click "Continue":
 
-### Making Notes and Printing
+### Like this
 
-There's another interesting feature we can take advantage of. 
+Like this.
 
-```{r}
-alert("## This is a note")
+## Making Notes and Printing
+
+There's another interesting feature we can take advantage of. You can run the `note()` function in any code block to add a quick note: 
+
+```{r notetest, exercise=TRUE}
+note("You can add notes along with other code.")
+7 + 3
+
+note("Neat!")
+```
+
+The notes themselves can be composed in [Markdown](https://www.markdownguide.org/cheat-sheet/), if you'd like to add more complex formatting:
+
+```{r notetest2, exercise=TRUE}
 note("
 # Markdown note
 
@@ -105,3 +116,4 @@ This is a markdown note. You can write lists, for examples:
 And **bold** or *italic* text.
 ")
 ```
+
