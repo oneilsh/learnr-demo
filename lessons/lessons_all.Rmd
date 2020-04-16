@@ -12,6 +12,8 @@ library(learnr)
 
 source("utils.R")
 
+# a simple checker function - gradethis and checkr are packages 
+# designed to be paired with learnr, but I found them buggy and writing a checker is easy enough. # See example usage below.
 checker <- function(label,
                     user_code,
                     solution_code,
@@ -29,6 +31,7 @@ knitr::opts_chunk$set(exercise.checker = checker)
 ```
 
 ```{css, echo=FALSE, include=knitr::is_html_output()}
+/* Dont show the sidebar when printing to PDF to maximize content area.*/
 @media print {
    .topicsContainer {
        display: none;
@@ -168,3 +171,8 @@ The code changes you make and notes you write are only saved in the *browser cac
 As a result, you may want to print each section (to PDF, or on paper) as you complete it. You can use your browser's Print feature for that, and at the end of each section we'll include a button to remind you:
 
 <input type="button" onclick="window.print()" value="Print This Section" class="btn btn-info"/>
+
+
+```{r child = 'intro_r_background.Rmd'}
+```
+

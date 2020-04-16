@@ -1,12 +1,9 @@
 
 library(htmltools)
-
-
-note_warning <- function(contents) { note(contents, icon = "fa fa-bell", type = "alert alert-warning") }
-note_danger <- function(contents) { note(contents, icon = "fas fa-exclamation-triangle", type = "alert alert-danger") }
-note_interesting <- function(contents) { note(contents, icon = "fas fa-lightbulb", type = "alert alert-success") }
+# load font-awesome tags & deps
 htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
+## defining user-friendly notetaking functions
 note <- function(contents, icon = "fa fa-comment", type = "alert alert-info") {
   div(class = type,
       style = "display: block; width: 100%; padding: 8px;",
@@ -20,6 +17,12 @@ note <- function(contents, icon = "fa fa-comment", type = "alert alert-info") {
          )
       )
 }
+note_warning <- function(contents) { note(contents, icon = "fa fa-bell", type = "alert alert-warning") }
+note_danger <- function(contents) { note(contents, icon = "fas fa-exclamation-triangle", type = "alert alert-danger") }
+note_interesting <- function(contents) { note(contents, icon = "fas fa-lightbulb", type = "alert alert-success") }
+
+
+# functions below originally from https://github.com/rstudio/learnr/blob/master/docs/utils.R
 
 # Generate HTML for a 4-wide bootstrap thumbnail
 thumbnail <- function(title, img, href, source, caption = TRUE) {
