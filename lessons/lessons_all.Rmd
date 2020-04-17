@@ -176,3 +176,6 @@ As a result, you may want to print each section (to PDF, or on paper) as you com
 ```{r child = 'intro_r_background.Rmd'}
 ```
 
+```{r child = 'intro_r_and_rstudio.Rmd'}
+```
+

@@ -1,3 +1,15 @@
 ## R and RStudio
 
- 
+We mentioned in the last section that R is an interpreted language, meaning that files containing R code are read, or interpreted, by another program. Since you are working with an interactive document over the web, the interpreter is actually running behind the scenes on a server. Try running some code:
+
+```{r interp, exercise=TRUE}
+x <- 3 * 4
+x
+```
+
+What just happened? Your web browser sent those lines of code to a remote server, and that server passed them to the R interpreter for interpretation; the resulting answer was collected, and shipped back the browser to be displayed. 
+
+While this will be a convenient way to learn about R, it's not the *usual* way we write and run code.
+
+### R and RStudio
+

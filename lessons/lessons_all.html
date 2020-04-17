@@ -244,11 +244,14 @@ note_interesting(&quot;A nice soothing green color, don&#39;t you think?&quot;)<
 </div>
 <div id="section-some-r-background" class="section level2">
 <h2>Some R Background</h2>
-<p>The R programming language has a rich history, tracing its roots to the S language originally developed for statistical computing in the mid-1970s at Bell Laboratories. Later, the open-source R project extended the capabilities of S while incorporating features of languages like LISP and Scheme.<a href="#section-fn1" class="footnote-ref" id="section-fnref1"><sup>1</sup></a></p>
+<div id="section-history" class="section level3">
+<h3>History</h3>
+<p>The R programming language has a rich history, tracing its roots to the S language originally developed for statistical computing in the mid-1970s at Bell Laboratories. Later, the open-source R project extended the capabilities of S while incorporating features of languages like LISP and Scheme.</p>
 <p>It’s worth mentioning that R is an ‘interpreted’ language, rather than a ‘compiled’ language. This means that R code is not translated (compiled) into bytecode that a CPU can read natively. Rather, R code is interpreted (read) by another program, called the interpreter. (The interpreter program itself <em>is</em> compiled and run by the CPU.) There are downsides to such a scheme–many types of computation run slower in R than they might if they were written in a compiled language (like C).</p>
-<p>Why would the designers of a programming language choose to have their program “run” by another program, when it’s possible to have them run directly on the CPU? There are a number of reasons, the most important of which is flexibility. Consider the task of adding a new cool feature to R (which has happened many times over the years). If we were forced to translate all code directly to CPU-readable instructions, this would be quite a bit of work, because CPU instructions are fairly limited. On the other hand, supporting a new feature in an interpreted language is often quite easy, requiring a small change to the interpreter program (which, yes, does need to itself be re-compiled to CPU-readable code). Some examples of interpreted languages include R, Python, and JavaScript, and some examples of compiled languages include C, C++, and Go.<a href="#section-fn2" class="footnote-ref" id="section-fnref2"><sup>2</sup></a></p>
+<p>Why would the designers of a programming language choose to have their program “run” by another program, when it’s possible to have them run directly on the CPU? There are a number of reasons, the most important of which is flexibility. Consider the task of adding a new cool feature to R (which has happened many times over the years). If we were forced to translate all code directly to CPU-readable instructions, this would be quite a bit of work, because CPU instructions are fairly limited. On the other hand, supporting a new feature in an interpreted language is often quite easy, requiring a small change to the interpreter program (which, yes, does need to itself be re-compiled to CPU-readable code). Some examples of interpreted languages include R, Python, and JavaScript, and some examples of compiled languages include C, C++, and Go. (Recent advancements in language design now enable languages to have the best of both worlds. Julia, for example, is a language similar to R in flexibility, but also compiles to produce very fast-running programs. Julia is not yet the data science language du jour, and it’s unclear whether it will grow to the popularity enjoyed by Python and R.)</p>
 <p>As a result of its heritage R is a remarkably flexible language. With so much flexibility comes both power and interesting ways of thinking about programming. While languages like Python emphasize the use of for-loops and if-statements to control program flow, R provides an alternative syntax for manipulation of data through sophisticated logical statements. Even though interpreted languages are generally slow, for many of the statistical tasks in which R specializes the underlying interpreter code is highly optimized or parallelized so that analyses of millions or billions of data points can be completed quickly. Like many programming languages, R supports a “package” system allowing users to easily download additional software libraries for specialized uses.</p>
 <p>The flexibility of R has a dark side, however, compared to other more rigid languages. R lets package developers (and the core R developers) easily “invent” new syntax. Over the years different specialized syntaxes have waxed and waned in popularity, making R more of an evolving ecosystem than a static tool. Very few people know the ins and outs of all that is available in the R ecosystem. Fortunately, it’s not necessary to know everything to be successful!</p>
+</div>
 <div id="section-tidyverse-and-base-r" class="section level3">
 <h3>Tidyverse and Base-R</h3>
 <p>“Base” R is the syntax and set of functions originally designed for R, and included in a basic installation as part of the interpreter. While powerful, many don’t consider it particularly friendly, especially for newcomers.</p>
@@ -277,7 +280,28 @@ subset_ordered</code></pre>
 <p>(The extra printed messages are warnings produced by the <code>library(dplyr)</code> line, indicating that some functionality provided by the dplyr library replaces some functionality from base-R.)</p>
 <p>As of this writing, an ongoing debate in the R community concerns whether beginners should learn base-R first, tidyverse first, or some mix. There are pros and cons to each approach:</p>
 <p><strong>Base-R First</strong></p>
-<p><em>Pros</em>: Not all analyses can be completed entirely with tidyverse packages, and learning base-R syntax provides a foundation</p>
+<p><em>Pros</em>: Not all analyses can be completed entirely with tidyverse packages, and learning base-R syntax provides a foundational understanding of R.</p>
+<p><em>Cons</em>: The syntax can be intimidating, and the learning curve longer, meaning it can take longer for new programmers to start producing useful results.</p>
+<p><strong>Tidyverse First</strong></p>
+<p><em>Pros</em>: Tidyverse functionality is widely used in practice, and specific concepts can be employed quickly by beginners for basic analyses.</p>
+<p><em>Cons</em>: Tidyverse packages co-exist nicely with base-R, but exactly how they do so can be confusing. The collection of tidyverse packages introduce many functions with specific purposes, while base-R tends to utilize the same few, flexible concepts.</p>
+<hr />
+<p>So, how will we approach learning R? We’re likely to jump back and forth, starting with a few of the most important concepts from base-R, and introducing tidyverse alternatives along the way. As the lessons progress, we’ll prefer using tidyverse when we can, but utilize base-R when we must (and occasionally just as reminders).</p>
+</div>
+<div id="section-prior-experience-with-python-or-r" class="section level3">
+<h3>Prior Experience with Python or R</h3>
+<p>If you are coming in with prior experience in R, fear not - we’ve designed these lessons to be reasonably quick, with exercises along the way for practice and checking understanding. We’ve also included sections that are more advanced, but optional, for those wishing to deepen their understanding.</p>
+<p>If you are coming in with prior experience in Python (or another language), we request that you keep an open mind while learning R. While the two languages are superficially similar, they differ in many significant ways. Python has long held the <a href="https://www.python.org/dev/peps/pep-0020/">philosophy</a> that “there should be one– and preferably only one –obvious way to do it.” This is in contrast to R, where there are several ways to do nearly everything. Python is a mainstay in machine learning (of the less-statistical sort, e.g. deep learning) and applications where R is weaker, such as systems administration and DevOps.</p>
+<p>On the other hand, R provides a powerful set of tools and features that many a Pythonista has grown to love; we’ll leave it to you to decide which ones.</p>
+</div>
+<div id="section-summary" class="section level3">
+<h3>Summary</h3>
+<p>R is an increasingly popular ecosystem of tools specializing in data analysis. While its main competitor Python shares this feature, the breadth of tools available in R for statistical data analysis warrants discovering more about it. In these lessons we’ll mix base-R concepts and popular functions from the tidyverse, with the goal of providing good exposure to foundational R concepts and a quick on-ramp to practical data analysis.</p>
+<p><input type="button" onclick="window.print()" value="Print This Section" class="btn btn-info"/></p>
+</div>
+</div>
+<div id="section-r-and-rstudio" class="section level2">
+<h2>R and RStudio</h2>
 
 <script type="application/shiny-prerendered" data-context="server-start">
 library(learnr)
@@ -392,14 +416,6 @@ output$`tutorial-exercise-basestatextidy-output` <- renderUI({
 {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37]}},"value":[{"type":"character","attributes":{},"value":["backports","base","compiler","curl","datasets","digest","evaluate","fastmap","graphics","grDevices","htmltools","htmlwidgets","httpuv","jsonlite","knitr","later","learnr","magrittr","markdown","methods","mime","promises","R6","Rcpp","rlang","rmarkdown","rprojroot","shiny","stats","stringi","stringr","tools","utils","withr","xfun","xtable","yaml"]},{"type":"character","attributes":{},"value":["1.1.6","3.6.1","3.6.1","4.3","3.6.1","0.6.25","0.14","1.0.1","3.6.1","3.6.1","0.4.0","1.5.1","1.5.2","1.6.1","1.28","1.0.0","0.10.1.9001","1.5","1.1","3.6.1","0.9","1.1.0","2.4.1","1.0.4.6","0.4.5","2.1","1.3-2","1.4.0.2","3.6.1","1.4.6","1.4.0","3.6.1","3.6.1","2.1.2","0.13","1.8-4","2.2.1"]}]}]}
 </script>
 <!--/html_preserve-->
-</div>
-</div>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="section-fn1"><p>Some of the content in this material is sourced from the open-access book <a href="https://open.oregonstate.education/computationalbiology"><em>A Primer for Computaitonal Biology</em></a>.<a href="#section-fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="section-fn2"><p>Recent advancements in language design now enable languages to have the best of both worlds. Julia, for example, is a language similar to R in flexibility, but also compiles to produce very fast-running programs. Julia is not yet the data science language du jour, and it’s unclear whether it will grow to the popularity enjoyed by Python and R.<a href="#section-fnref2" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
 
 </div> <!-- topics -->
