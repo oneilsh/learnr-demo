@@ -11,5 +11,8 @@ What just happened? Your web browser sent those lines of code to a remote server
 
 While this will be a convenient way to learn about R, it's not the *usual* way we write and run code.
 
-### R and RStudio
+### R and RStudio on the Desktop
 
+Normally, R is run as desktop software--it can be installed on Windows, Mac, and Linux, from [https://cran.r-project.org/](https://cran.r-project.org/). Once downloaded, installed, and opened, you'll see the R interpreter running, with the R "prompt" `> ` ready to read lines of code. 
+
+### TODO: write more about interfaces etc.

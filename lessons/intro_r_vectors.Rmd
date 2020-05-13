@@ -1,0 +1,208 @@
+## Vectors
+
+Many programming languages have seperate concepts for individual data points, for example the integer `4`, and collections of data points, like `[4, 2, -3, 0, 1]`. R is a bit different, in that the simplest kind of data are a collection of data of the same type, called a *vector*. There's no need to have flashbacks to geometry class--in R a vector is just an ordered collection of items of the same type. 
+
+### Basics
+
+Let's create a vector of "numerics" (numbers that might have decimal values) and assign it to the varible `nums`. Vectors are created by calling the `c()` function listing their elements as parameters. 
+
+```{r vec1, exercise=TRUE}
+nums <- c(-2.1, 3.2, 4)
+print(nums)
+```
+
+This is a vector of length 3, which we can see by calling the `length()` function on it.
+
+```{r vec2, exercise = TRUE}
+nums <- c(-2.1, 3.2, 4)
+print(length(nums))
+```
+
+A single number is also a vector, it just happends to have length 1. We can even have vectors of length 0.
+
+```{r vec3, exercise = TRUE}
+num_vec <- 4    # same as num_vec <- c(4)
+print(length(num_vec))
+```
+
+As the code comment mentions, `num_vec <- 4` accomplishes the same thing as `num_vec <- c(4)`, it's a sort of 
+shorthand. R has lots of shorthand notation. 
+
+Comments, by the way, are anything on a line after a `#` character - they are ignored by the R interpreter and allow us to make notes directly in code. The R interpreter also ignores empty lines, so we can add them to make the code more readable. 
+
+Let's return to our first example:
+
+```{r vec4, exercise=TRUE}
+nums <- c(-2.1, 3.2, 4)
+print(nums)
+```
+
+You may be wondering what the `[1]` is about in the output. That's R's way of letting us know that the printed output is a vector, and the first element is `-2.1`. This is easier to see if we print a very long vector; the `seq()` function produces a sequence of numbers as a vector, it can take 3 parameters: a starting number, an ending number, and a step size.
+
+```{r vec5, exercise=TRUE, out.width='250px'}
+nums <- seq(2, 40, 0.5)
+print(nums)
+```
+
+This output shows numbers from `2.0` to `40.0`, and indicates that the first element is 2.0, the 15th is 9.0, the 29th is 16.0, and so on. 
+
+The same thing happens if we print a vector of length 1. Let's print the length of `nums`, but rather than call `print(length(nums))`, we'll store the result in an intermediary variable and then print that. 
+
+
+```{r vec6, exercise=TRUE, out.width='250px'}
+nums <- seq(2, 40, 0.5)
+len_nums <- length(nums)
+print(len_nums)
+```
+
+The resulting printout of `[1] 77` indicates that `len_nums` is a length-one vector, whose 1st element is `77`. Remember: there's nothing "smaller" than a vector - even single numbers such as returned by `length()` are vectors, they just happen to be of length 1. 
+
+By the way, R vectors cannot "nest" - `c()` is actually short for "concatenate", meaning it takes a number of input vectors (like `-2.1`, `3.2`, or even a longer vector like `c(4, 7)`) and concatenates them into a single longer vector. 
+
+```{r vec7, exercise=TRUE}
+nums <- c(-2.1, 3.2, c(4, 7))
+print(nums)
+```
+
+### Vector Classes, `NA` values
+
+Vectors come in a variety of types, or *classes*; we've already seen one, the "numeric" type. Another type is known as "character", although these vectors actually store short strings as elements, rather than individual characters. Here's a character vector of length 3:
+
+```{r vec7b, exercise=TRUE}
+names <- c("Kim", "Charles", "Bobby Joe")
+print(names)
+print(length(names))
+```
+
+Vectors cannot mix types; if we try to, R will automatically convert the elements to a single type; if any character elements are present the conversion will be to character. 
+
+```{r vec8, exercise=TRUE}
+elements <- c(4, "XL92", 7.5, 8.0)
+print(elements)
+```
+
+There's no warning when this happens, so such "silent conversion" can be a source of bugs. 
+
+There are a handful of other vector classes, some more common than others. One of the lesser common types is the "integer" vector - these are just like numeric vectors, but entries are not allowed to have fractional values. By default vectors with numbers will be numeric, but we can create an integer vector by conversion with the `as.integer()` function, which just removes the fractional part.
+
+```{r vec9, exercise=TRUE}
+values <- c(4.2, -3.2, 0.2, 4)
+print(values)
+
+values_as_ints <- as.integer(values)
+print(values_as_ints)
+```
+
+Aside from this, integer vectors work much like numerics. If you're coming from another language where
+integer values are more common, just know that R auto-converts integer vectors to numerics whenever it makes
+sense (the integer `10` divided by the integer `3` results in the numeric `3.333333333`).
+
+If you ever have a vector (or other data types we'll cover later) and you want to see what class it is, you can
+run the `class()` function on it (which returns a length-1 character vector describing the class, so we print the result).
+
+```{r vec10, exercise=TRUE}
+values <- c(4.2, -3.2, 0.2, 4)
+print(class(values))
+
+values_as_ints <- as.integer(values)
+print(class(values_as_ints))
+```
+
+Character vectors have class `"character"`.
+
+```{r vec11, exercise=TRUE}
+values <- c("alpha", "beta", "gamma")
+print(class(values))
+```
+
+Just as there is an `as.integer()` function to convert a vector into an integer vector, there are `as.numeric()` to convert to numeric, and `as.character()` to convert to character. Here are a few examples:
+
+```{r vec12, exercise=TRUE}
+nums_character <- c("4.6", "1e-3", "20")
+print(as.numeric(nums_character))
+
+nums <- c(0.2, -1, 3.4)
+print(as.character(nums))
+```
+
+These conversions can be handy in cases where data has for some reason not been imported in the right way. 
+
+Note, however, what happens if we attempt a conversion that doesn't make sense:
+
+```{r vec13, exercise=TRUE}
+nums_character <- c("4.6", "1e-3", "alpha")
+print(as.numeric(nums_character))
+```
+
+In this case we see a warning, `NAs introduced by coercion`, and the output contains an `NA` value. `NA` values in R stands for "Not Available" and is often used to represent missing data. We'll see how these values affect computations in later sections. 
+
+There are three other types of vectors worth noting: vectors for dates and times, factors, and logical vectors. Each of these are complex topics in themselves, so we'll just introduce them there and go into more detail later. 
+
+#### Dates and Times
+
+R has explicit support for dates and times a special vector classes. These actually come in two forms, `posixct` and `posixlt`. The `posix` prefix denotes that these conform to POSIX (Portable Operating System Interface) standards. The `posixct` type stores dates and times as integers "under the hood," encoding the number of seconds passed since 00:00:00 UTC on January 1st, 1970. The `posixlt` type on the other hand stores dates and times "under the hood" as separate parts for hour, minute, day, year, etc. 
+
+For a quick example, we can call the `Sys.time()` function which returns the current time as a length-1 `posixct` vector. Note that when we print it, it looks very much like a character vector, but `class()` reveals that it isn't.
+
+```{r vec14, exercise=TRUE}
+current <- Sys.time()
+print(current)
+print(class(current))
+```
+
+Working with dates and times can be difficult in R, particularly when reading data in different formats into datetime vectors. Fortunately the tidyverse package `lubridate` helps quite a bit; we'll cover it in more detail later. 
+
+
+#### Factors
+
+Factors are a special kind of vector, used to represent *categorical* data, of the kind we'd be tempted to use character vectors for, but with a more rigourous definition of what categories are allowed and how they relate. 
+To show a quick example, let's create a factor of values from different categories, built from a basic character vector.
+
+```{r vec15, exercise=TRUE}
+values <- c("low", "medium", "high", "low", "high", "medium")
+
+values_fac <- as.factor(values)
+print(values_fac)
+```
+
+Note that when printing a factor, the values are shown without quotation marks, and we also see the different "levels" (categories) stored in the factor, created from the different unique entries of the character vector.
+
+In many ways factors act like character vectors, but in some other ways they don't, because they store extra information in the "levels." For example, if we were to try and change the 3rd entry of the character vector to `"extreme"` (which we'll learn how to do soon), we'd be able to just fine. But, attempting to change the third entry of the of the factor to `"extreme"` would result in an `NA` being stored, because `extreme` isn't one of the levels. 
+
+We'll spend quality time with factors later, but know that they are a common source of frustration in R. One reason is that they don't always do what we'd expect them to do (factors with levels built from integer vectors are particularly confusing). Another is that R frequently converts character vectors to factors by default, and without warning. This is due to R's historical focus on statistics, where free-form data are rare but categorical data are common. As we go along, we'll be careful to keep in mind whether we're working with a character vector or factor. Don't forget about `class()`!
+
+```{r vec16, exercise=TRUE}
+values <- c("low", "medium", "high", "low", "high", "medium")
+
+values_fac <- as.factor(values)
+print(class(values_fac))
+```
+
+
+#### Logical vectors
+
+Logical vectors are one of the more important types, along with character and numeric. A logical vector stores "logical" (in other languages called Boolean) values `TRUE` or `FALSE` (or `NA`). 
+
+```{r vec17, exercise=TRUE}
+values <- c(TRUE, FALSE, TRUE, TRUE, FALSE)
+print(values)
+print(class(values))
+```
+
+Logical vectors are quite simple, but they are used very frequently in R in various ways for selecting and subsetting data (even if we don't see them during those processes, they are there). 
+
+### Summary
+
+There's a lot to learn about vectors, and they are a foundational part of R. We'll spend more time with them in the next section, before jumping into more practical parts of R like data frames and plotting. 
+
+* There's nothing "smaller" than a vector; even a single value like `4` is a vector of length 1. 
+* Vectors cannot mix types, `c(4, TRUE, "hello")` autoconverts to a character vector, `c("4", "TRUE", "hello")`. (Generally the conversion is the to the most "general" type in the mix, where character is most general, followed by numerics and integers, and logicals are least general.)
+* Vectors don't "nest", `c()` is short for "concatenate, so `c(4, 2.1, 5, 6, 0.5)` and `c(c(4, 2.1), 5, c(6, 0.5))` produce the same thing. 
+* `NA` values can be present in any class of vector, and generally represents missing, unknown, or unavailable data. 
+* More exotic vector types such as `posixlt` and factors are available for more specialized uses. 
+
+<input type="button" onclick="window.print()" value="Print This Section" class="btn btn-info"/>
+
+
+
+

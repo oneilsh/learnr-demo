@@ -8,7 +8,12 @@ runtime: shiny_prerendered
 ---
 
 ```{r setup, include=FALSE}
+
 library(learnr)
+# to keep learnr from warning when print() is used as the solution to an exercise about invisible return
+learnr <- getNamespace("learnr")
+unlockBinding('invisible_feedback', learnr)
+learnr$invisible_feedback <- function() {}
 
 source("utils.R")
 
@@ -26,6 +31,7 @@ checker <- function(label,
   check_function <- eval(parse(text = check_code), envir_prep)
   check_function(last_value, user_code)
 }
+
 
 knitr::opts_chunk$set(exercise.checker = checker)
 ```
@@ -176,6 +182,14 @@ As a result, you may want to print each section (to PDF, or on paper) as you com
 ```{r child = 'intro_r_background.Rmd'}
 ```
 
-```{r child = 'intro_r_and_rstudio.Rmd'}
+```{r}
+#```{r child = 'intro_r_and_rstudio.Rmd'}
+#```
+
+#```{r child = 'intro_r_vectors.Rmd'}
+#```
+
+#```{r child = 'intro_r_vectors2.Rmd'}
+#```
 ```
 

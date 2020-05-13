@@ -1,0 +1,443 @@
+## Vector Operations
+
+Although vectors are the lowest-level way to organize data in R, we can do quite a lot with them via specialized syntax and functions. Spending time learning about them will provide a good base for understanding R overall.
+
+### Vectorization
+
+Basic arithmetic works as expected in R, with the caveat that when working with vectors they are added, subtracted, etc. on an *element-by-element* basis. 
+
+```{r vec2_1, exercise=TRUE}
+first <- 4
+second <- 3
+result <- first * second
+print(result)
+
+first <- c(1, 2, 3, 4)
+second <- c(10, -10, 100, -100)
+result <- first * second
+print(result)
+```
+
+In the second example above, `1` is multiplied by `10`, `2` is multiplied by `-10`, and so on down the line. If one of the vectors is shorter than the other it is *"recycled"*, effectivelly repeating it as necessary.
+
+```{r vec2_2, exercise=TRUE}
+first <- c(1, 2, 3, 4)
+second <- c(10, -10)
+
+result <- first * second
+print(result)
+```
+
+
+If recycling is necessary but the shorter vector isn't used completely on the last recycle, you'll get a warning (because there are few cases where this is not an accident).
+
+```{r vec2_3, exercise=TRUE}
+first <- c(1, 2, 3, 4)
+second <- c(10, -10, 100)
+
+result <- first * second
+print(result)
+```
+
+This works very nicely when the sorter vector is a length-1 vector, which ends up being recycled against every element of the longer vector. (Here we're showing `+`; `-`, `/`, and `^` are other commonly used arithmetic operators.)
+
+```{r vec2_4, exercise=TRUE}
+first <- c(1, 2, 3, 4)
+
+result <- first + 100
+print(result)
+```
+
+### Generating Random Data, More Mathematics
+
+When working in R it's often helpful to generate some random data to work with. R provides a number of functions to do this; for example, `rnorm()` generates a vector of numerics from a normal distribution that has a specified mean and standard deviation. It takes three parameters: the number of samples (length of the returned vector), the mean of the distribution sampled from, and the standard deviation of the distribution sampled from. We'll commonly see parameters specified by "parameter name" as in the second example below. (Note: you cannot use `<-` in place of `=` for parameters, even though `<-` and `=` can be used similarly when assigning to variables.)
+
+
+```{r vec2_5, exercise=TRUE}
+values <- rnorm(5, 10, 5)
+print(values)
+
+values <- rnorm(8, mean = 100, sd = 50)
+print(values)
+```
+
+The `mean()` and `sd()` functions compute the mean and standard deviation of a numeric vector and return the result as a length-1 vector.
+
+```{r vec2_6, exercise=TRUE}
+values <- rnorm(5, 10, 5)
+
+# compute and print mean
+ave <- mean(values)
+print(ave)
+
+# compute and print sd
+print(sd(values))
+```
+
+Note that the mean of the vector is not 10, because we're computing the mean of the random sample. 
+
+Some other useful random-number generators, presented with minimal explanation:
+
+```{r vec2_7, exercise=TRUE}
+values <- runif(8, min = 0, max = 10)  # sample uniformly
+print(values)
+
+values <- rexp(8, rate = 2)            # sample from exponential distribution
+print(values)
+
+values <- rpois(8, lambda = 5)         # sample from a poisson distribution
+print(values)
+```
+
+Occasionally we want to randomly sample from entries from a vector; the `sample()` function is useful for this. It takes two important parameters and potentially a third. Covering the first two, we can request a sample of size four from a vector:
+
+```{r vec2_8, exercise=TRUE}
+values <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+# same as
+# values <- seq(1, 10, 1)   # sequence, start, stop, step
+# same as
+# values <- 1:10            # shorthand for sequence with step size 1
+
+samp <- sample(values, size = 6)
+print(samp)
+```
+
+We can optionally add a `replace = TRUE` parameter to sample with replacement; this is required if we want to generate a sample larger than the input set. We can sample from any kind of vector, not just numerics, and `NA` values can be included as well. 
+
+
+```{r vec2_9, exercise=TRUE}
+values <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+samp <- sample(values, size = 6, replace = TRUE)
+print(samp)
+
+samp <- sample(values, size = 15, replace = TRUE)
+print(samp)
+
+values <- c("low", "medium", "high", NA)
+samp <- sample(values, size = 8, replace = TRUE)
+print(samp)
+```
+
+R includes a large (like, dozens) of functions for working with vectors. A couple of others worth knowing now are shown below. Don't be too concerned with memorizing all of the different functions R provides, just know that it provides a lot, and later we'll see how to find functions you're looking for. (And create new functions!)
+
+#### `rep()`, repeat a vector
+
+```{r vec2_10, exercise=TRUE}
+values <- c(1, 2, 3)
+
+longer <- rep(values, times = 4)
+print(longer)
+
+# use the each parameter to repeat each element in turn
+longer <- rep(values, each = 4)
+print(longer)
+
+# works with other types
+longer <- rep(c("A", "B"), each = 5)
+print(longer)
+```
+
+#### `unique()`, get unique entries
+
+```{r vec2_11, exercise=TRUE}
+values <- c("A", "B", "C")
+
+# generate vector with repeats
+with_repeats <- sample(values, size = 8, replace = TRUE)
+print(with_repeats)
+
+# get the unique entries
+without_repeats <- unique(with_repeats)
+print(without_repeats)
+```
+
+Notice that the unique entries are kept in order of first occurance.
+
+#### `rev()`, reverse a vector
+
+```{r vec2_12, exercise=TRUE}
+values <- c("A", "B", "C", "D")
+
+reversed <- rev(values)
+print(reversed)
+```
+
+#### `mean()`, `sd()`, `median()`, `sum()`, `prod()`
+
+These functions (and other similar ones) provide summary statistics for a numeric vector. 
+
+```{r vec2_13, exercise=TRUE}
+values <- c(2, 4, 6, 8, 10)
+
+ave <- mean(values)
+print(ave)
+
+print(sd(values))
+print(median(values))
+print(sum(values))
+print(prod(values))
+```
+
+All of these will return `NA` if any entry in the input is `NA`. 
+
+```{r vec2_14, exercise=TRUE}
+values <- c(2, 4, NA, 8, 10)
+
+ave <- mean(values)
+print(ave)
+
+print(sd(values))
+print(median(values))
+print(sum(values))
+print(prod(values))
+```
+
+Each of these can take an optional `na.rm =  TRUE`, instructing the functions to drop `NA` values before the computations. 
+
+```{r vec2_15, exercise=TRUE}
+values <- c(2, 4, NA, 8, NA)
+
+ave <- mean(values, na.rm = TRUE)
+print(ave)
+
+print(sd(values, na.rm = TRUE))
+print(median(values, na.rm = TRUE))
+print(sum(values, na.rm = TRUE))
+print(prod(values, na.rm = TRUE))
+```
+
+### `is.na()`, `abs()`, `log()`, etc.
+
+
+The `abs()` function computes the absolute value of entries, and `log()` the natural logarithm (potentially resulting in `NaN` where `log()` is undefined, which is similar to `NA` but more specific to numbers).
+
+```{r vec2_16, exercise=TRUE}
+values <- c(3, -2, 1, 0.2, -8)
+
+print(abs(values))
+print(log(values))
+```
+
+
+
+
+Coming up soon we'll learn how to deal with `NA` values using the very handy `is.na()` function, which returns a logical vector indicating which elements are `NA` or `NaN`.
+
+```{r vec2_16b, exercise=TRUE}
+values <- c(2, 4, NA, 8, NaN)
+
+check <- is.na(values)
+print(check)
+```
+
+
+### Logical Comparisons
+
+We can perform complex logic on vectors. Consider comparing two length-1 vectors with `>`:
+
+
+```{r vec2_17, exercise=TRUE}
+first <- 5
+second <- 8
+
+result <- first > second
+print(result)
+```
+
+Here we see that result holds the length-1 logical vector `FALSE`, indicating that five is not greater than eight. The `>` operator is vectorized, just like `*`, `+`, etc. 
+
+```{r vec2_18, exercise=TRUE}
+first <- c(10, 20, 30, 40)
+second <- c(15, 15, 35, 35)
+
+result <- first > second
+print(result)
+```
+
+Recycling happens the same way as well, allowing length-1 vectors to be recycled against each element.
+
+```{r vec2_19, exercise=TRUE}
+first <- c(10, 20, 30, 40)
+
+result <- first > 20
+print(result)
+```
+
+By the way, comparisons generally work with character vectors in the expected way (alphabetical comparison).
+
+```{r vec2_20, exercise=TRUE}
+first <- c("cactus", "cat", "dog", "elephant")
+
+result <- first > "car"
+print(result)
+```
+
+Be warned though, while there are many things R won't let us do with numeric and character vectors (`c(3, 4) + c("A", "B")` with give an error, for example), R does allow comparison between character and numeric types without warning. Numbers are always considered smaller. (Ideally this would be at least a warning, because it's very rare to do so purposefully, but not uncommon to do on accident if some data were auto-converted to a character type.)
+
+```{r vec2_21, exercise=TRUE}
+first <- c(100, 20, 100000, -20)
+second <- c("cactus", "cat", "dog", "elephant")
+
+result <- first > second
+print(result)
+```
+
+
+Other logical comparisons include `<`, `>=` and `<=` (greater than or equal to, and less than or equal to), `==` (equal to), and `!=` (not equal to). 
+
+These operators also work with other types like character vectors (and date/time vectors, factors, logical vectors), and in fact we generally won't use `==` and `!=` for numeric comparisons.
+
+```{r vec2_22, exercise=TRUE}
+first <- c("A", "C", "B", "C", "A")
+second <- c("A", "B", "A", "C", "B")
+
+result <- first == second
+print(result)
+
+result <- first != second
+print(result)
+```
+
+As usual, vectors recycle, allowing us to compare a longer vector to a shorter:
+
+```{r vec2_23, exercise=TRUE}
+first <- c("A", "C", "B", "C", "A", "C")
+
+result <- first == "A"
+print(result)
+```
+
+Suppose that we want to know which elements are *either* `"A"` or `"B"`. Because of the element-by-element nature of recycling, we would *not* want to try using `==` for this.
+
+```{r vec2_24, exercise=TRUE}
+first <- c("A", "C", "B", "C", "A", "C")
+
+result <- first == c("A", "B")
+print(result)
+```
+
+Why did this not work? Because the short vector was recycled, this code is effectively the same as:
+
+```{r vec2_25, exercise=TRUE}
+first <- c("A", "C", "B", "C", "A", "C")
+second <- c("A", "B", "A", "B", "A", "B")
+
+result <- first == second
+print(result)
+```
+
+Hopefully with this illustrates and reinforces the importance of vectorization and recycling. 
+
+R does include an operator that breaks this mold: the `%in%` operator. Rather than operating element-by-element with vectorization, it does a very specific job: it compares every element in the left-hand-side vector against every element in the right-hand-side, and returns a vector of the same length as the left-hand-size where those entry were equal to any entry in the right-hand-side.
+
+```{r vec2_26, exercise=TRUE}
+first <- c("A", "C", "B", "C", "A", "C")
+
+result <- first %in% c("A", "B")
+print(result)
+```
+
+This operator accomplishes our goal of identifying which elements are either `"A"` or `"B"`. 
+
+
+### Logical Connectives
+
+The comparison operators above compare vectors to produce logical vectors, R also includes "logical connectives" to work with vectors with "and", "or", or "not". 
+
+First, let's cover `&`, which combines two logical vectors and produces another where entries are `TRUE` in both of the inputs, as an "and." (If you are coming from other languages, you might have run across `&&` or `and` for the same functionality. R has an `&&` but it does something slightly different.) As usual the comparison is vectorized. 
+
+
+```{r vec2_27, exercise=TRUE}
+first <- c(TRUE, TRUE, FALSE, FALSE)
+second <- c(TRUE, FALSE, TRUE, FALSE)
+
+result <- first & second
+print(result)
+```
+
+The `|` connective reads as "or", but really means "and/or" - it results in `TRUE` when either or both of the two inputs are `TRUE`. 
+
+```{r vec2_28, exercise=TRUE}
+first <- c(TRUE, TRUE, FALSE, FALSE)
+second <- c(TRUE, FALSE, TRUE, FALSE)
+
+result <- first | second
+print(result)
+```
+
+Finally, `!` negates a logical vector when placed in front of it. 
+
+```{r vec2_29, exercise=TRUE}
+first <- c(TRUE, TRUE, FALSE, FALSE)
+
+result <- !first 
+print(result)
+```
+
+The `&`, `|`, and `!` operators expect to be given one or two *logical* vectors. Suppose we want to determine which elements of a vector are equal to `"A"` *or* equal to `"B"`. We would not want to use `values == "A" | "B"`, instead we should do `values == "A" | values == "B"`; the latter combines two logical vectors (produced by `==`) with `|`, while the former tries to combine a logical vector (left-hand-side) with a character vector, which is an error.
+
+```{r vec2_30, exercise=TRUE}
+values <- c("A", "C", "B", "C", "A", "C")
+
+# same as values %in% c("A", "B")
+result <- values == "A" | values == "B"
+print(result)
+```
+
+We can create complex logical expressions with these various pieces. When doing so it often makes sense to group with `()` to clarify the intent. 
+
+```{r vec2_31, exercise=TRUE}
+first <- "alice"
+second <- "bob"
+third <- 3
+fourth <- 4.7
+
+result <- third < fourth & (second == "bob" | !(first < second))
+print(result)
+```
+
+In the above, `first < second` is calculated first, then the resulting logical is negated with `!`, `second == "bob"` is then calculated, and this logical is combined the other with `|`. Lastly, this is combined with `&` to the result of `third < fourth`. 
+
+
+#### A warning on comparing numerics with equality
+
+As mentioned above, we generally don't want to use `==` or `!=` when comparing numerics. The reason has to do with how numbers are stored in computer memory, as binary digits with a finite number of decimal places. If we were to calculate `(1/3 * 1/3) / (1/3) == 1/3` we should expect the result to be `TRUE` (since $x * x / x$ always equals $x$.) But suppose we were computers with 4 decimal places of storage; then we'd be comparing
+`0.3333 * 0.3333 / 0.3333 == 0.3333`. Suppose we computed `0.3333 * 0.3333` first, resulting in `0.11108889`, but given our limitation we'd be left with `0.1110`, and `0.1110 / 0.3333` is not equal to `0.3333`.
+
+These annoyances are known as "rounding errors" and affect most programming languages. Because numbers are stored in binary, we can even see errors where we wouldn't expect them; for example `0.2` is `0.001100110011...` in binary. Try running this code:
+
+```{r vec2_32, exercise=TRUE}
+result <- 0.2 * 0.2 / 0.2 == 0.2
+print(result)
+```
+
+False! If you do find yourself tempted to compare numerics for equality, you might consider just checking if they are *close* (whether absolute value of their difference is below some threshold).
+
+```{r vec2_33, exercise=TRUE}
+first <- 0.2 * 0.2 / 0.2
+second <- 0.2
+
+threshold <- 0.0000000001
+result <- abs(first - second) < threshold
+print(result)
+```
+
+### Summary
+
+This chapter covered quite a lot of information about vectors, including *vectorization* of operations and *vector recycling.* We looked at quite a few handy functions for working with vectors:
+
+* `rnorm()`, `runif()`, `rexp()`, and `rpois()`: Generate random numeric vectors
+* `sample()`: randomly sample from a vector to produce another
+* `rep()`: repeat a vector or elements of a vector
+* `unique()`: get the unique elements of a vector
+* `rev()`: reverse a vector
+* `mean()`, `sd()`, `median()`, `sum()`, `prod()`: summary statistics for numeric vectors; add `na.rm = TRUE` to ignore `NA` values in the input if there are any
+* `is.na()`: returns a logical vector indicating which elements of a vector are `NA` (or `NaN`, "not a number")
+* `abs()`, `log()`: absolute value and natural log for numeric vectors
+
+We looked at logical comparisons that produce logical vectors, with operators `<`, `<=`, `>`, `>=`, `==`, and `!=`. As with most operations, these operations are vectorized (compare two vectors element-by-element, recycling the shorter as needed). We also learned about a special operator, `%in%`, which is not vectorized the same way as others, indicating which elements in the left side are equal to *any* element of the right. The difference between `==` and `%in%` is subtle but important.
+
+Finally, we saw how to combine logical vectors with `&` ("and"), `|` ("or"), and `!` ("not"). 
+
+<input type="button" onclick="window.print()" value="Print This Section" class="btn btn-info"/>

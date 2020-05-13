@@ -1,0 +1,330 @@
+## Vector Selection/Subsetting
+
+So far we've learned a lot about R's most basic type: vectors. We know about different types of vectors (numeric, character, and logical being the most common and important) and how to convert between them, vectorization of basic operations (such as multiplying two vectors, or running `abs()` on a vector), vector recycling, and logical comparisons of vectors. 
+
+The last thing to know about vectors are the three main ways to *subset* or *select from* vectors (produce another vector with a subset of elements) and *replace* elements of vectors. 
+
+### Subsetting by Index
+
+Consider these two vectors, storing first names of people and their ages (apparently ordered by age):
+
+```{r vec3_1, exercise = TRUE}
+people <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+ages <- c(20, 30, 40, 50, 60)
+```
+
+Suppose we want to get the third element out from both of these into two length-1 vectors. We can do so like this:
+
+```{r vec3_2, exercise = TRUE}
+people <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+ages <- c(20, 30, 40, 50, 60)
+
+third_name <- people[3]
+third_age <- ages[3]
+
+print(third_name)
+print(third_age)
+```
+
+We could have used `1` as an index to get the first, and `5` to get the last. (Many programming languages have the first element at index `0`, R and a few other languages break from this norm.) We can use the `length()` function to extract the last element of a vector, even if we don't know offhand how many elements it has. 
+
+
+```{r vec3_3, exercise = TRUE}
+ages <- c(20, 30, 40, 50, 60)
+
+# using intermediate variable
+num_ages <- length(ages)        # 5
+last_age <- ages[num_ages]
+
+# OR nesting syntax
+last_age <- ages[length(ages)]
+
+print(last_age)
+```
+
+Going back to the example above, `3` is being used as the index to extract with. But we also know that `3` is a vector of length 1. Is it possible then to use a longer vector as the index? Yes!
+
+```{r vec3_4, exercise = TRUE}
+people <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+ages <- c(20, 30, 40, 50, 60)
+
+people_subset <- people[c(3, 2)]
+ages_subset <- ages[c(3, 2)]
+
+print(people_subset)
+print(ages_subset)
+```
+
+In the above, we've used `c(3, 2)` as our selection (aka "indexing", aka "subsetting") vector. R has even respected the order in which we've asked for elements, with the subsets containing the second entry after the third entry from the original vectors. 
+
+#### Selective Replacement
+
+It is possible to replace elements in vectors using similar syntax. Let's replace the third and second elements of `people` with different versions. 
+
+
+```{r vec3_5, exercise = TRUE}
+people <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+
+people[c(3, 2)] <- c("Abigail", "Joseph")
+
+print(people)
+```
+
+Similarly, `people[1] <- "Kimberly"` would replace just the first element. 
+
+Notice that this replacement is also vectorized; if the replacement vector is shorter, it will be recycled, as in this example where we replace even indices of a vector:
+
+```{r vec3_6, exercise = TRUE}
+values <- c(10, 20, 30, 40, 50, 60, 70, 80)
+
+values[c(2, 4, 6, 8)] <- c(100, -100)
+
+print(values)
+```
+
+If our replacing vector is length one, it will be recycled for every element. Let's replace the same indices with `NA`.
+
+```{r vec3_7, exercise = TRUE}
+values <- c(10, 20, 30, 40, 50, 60, 70, 80)
+
+values[c(2, 4, 6, 8)] <- NA
+
+print(values)
+```
+
+By the way: it's possible to put a `-` in front a numeric vector to negate the entries: `-c(10, 20)` is the same as `c(-10, -20)`. The same happens if the vector is in a variable; if `x <- c(10, 20)`, then `-x` is `c(-10, -20)`.
+
+When subsetting or replacing, vectors of negative numbers can be used to work with all *other* elements.
+
+```{r vec3_7, exercise = TRUE}
+values <- c(10, 20, 30, 40, 50, 60, 70, 80)
+
+# subset entries other than the second and third
+other_than_second_third <- values[-c(3, 2)]
+print(other_than_second_third)
+
+# replace entries other than the second and third with 10000
+values[-c(3, 2)] <- 10000
+print(values)
+```
+
+
+Subsetting by numeric index vectors can be useful in some situations. For example, suppose we want to replace a subset of 5 random elements with `NA`. First, we'll generate a vector of all the indices with `1:length(values)` (which is the same as `seq(1, length(values), by = 1)`). Then we'll use `sample()` to grab five of those at random, and then use the random set of indices as the replacement index vector.
+
+```{r vec3_8, exercise = TRUE}
+values <- c(10, 20, 30, 40, 50, 60, 70, 80)
+
+all_indices <- 1:length(values)   # c(1, 2, 3, 4, 5, 6, 7, 8)
+
+subset_indices <- sample(all_indices, size = 5)
+print(subset_indices)
+
+values[subset_indices] <- NA
+print(values)
+```
+
+Note that the length-1 `NA` vector is being recycled since we're replacing more entries than we're giving to replace with. 
+
+
+### Subsetting by Name
+
+Let's return to our people and ages vectors:
+
+```{r vec3_10, exercise = TRUE}
+people <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+ages <- c(20, 30, 40, 50, 60)
+```
+
+Here we're attempting to tie two vectors together in meaning: Kim is 20, Joe is 30, and so on. There are many ways to do this in R with a single data container, including what are known as "named vectors." A named vector is simply any vector that carries with it a "names" character vector of the same length. The syntax for setting these names is a little strange, but once we do so printing out the named vector will show both the values themselves and the names.
+
+```{r vec3_11, exercise = TRUE}
+ages <- c(20, 30, 40, 50, 60)
+
+# associate a character vector to be used as names
+names(ages) <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+
+print(ages)
+```
+
+The `ages` vector is still a numeric vector; we can do arithmetic on it for example. Try adding lines like `new_ages <- ages + 1` and `print(new_ages)`, and notice that the new vector also has the same names. 
+
+We can similarly get the character vector of names out:
+
+```{r vec3_11, exercise = TRUE}
+ages <- c(20, 30, 40, 50, 60)
+names(ages) <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+
+names_vec <- names(ages)
+print(names_vec)
+```
+
+Any vector type can be named; we can have named numeric vectors, named logical vectors, and even named character vectors. 
+
+When a vector is named, we can use character vectors as another way of indexing and selective replacement. Let's get the third and second entries from this named vector
+
+```{r vec3_11, exercise = TRUE}
+ages <- c(20, 30, 40, 50, 60)
+names(ages) <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+
+subset_ages <- ages[c("Abby", "Joe")]
+print(subset_ages)
+```
+
+Much like selecting by index, the order is respected, but what is returned is another named numeric vector. (We can also get a length-one named vector out with something like `subset_ages <- ages["Joe"]`.) 
+
+Replacing elements is also similar, and the same rules apply for recycling if the replacement is shorter than the number of entries being replaced.
+
+```{r vec3_11, exercise = TRUE}
+ages <- c(20, 30, 40, 50, 60)
+names(ages) <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+
+ages[c("Abby", "Joe")] <- NA
+print(ages)
+```
+
+Let's suppose that we have a set of people who just had birthdays. See if you can figure out what this code is doing:
+
+```{r vec3_11, exercise = TRUE}
+ages <- c(20, 30, 40, 50, 60)
+names(ages) <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+
+birthdays <- c("Joe", "Bobby", "Linus")
+
+ages[birthdays] <- ages[birthdays] + 1
+print(ages)
+```
+
+Where is vector recycling being used in this code?
+
+
+#### Names as Attributes (side-note, advanced, optional)
+
+The way that R associates a character vector with another as "names" is through a general mechanism that R uses quite a bit "under the hood." R allows any data object (we've only seen vectors so far) to be attached as an "attribute" to another data object, via a length-1 character vector "attribute name." 
+
+To show an example, this code creates a simple numeric vector, and then attaches a character vector to a `"created_by"` attribute using the `attr()` function. 
+
+```{r vec3_11, exercise = TRUE}
+values <- 1:5 * 10     # 10 20 30 40 50 
+
+# set attribute
+attr(values, "created_by") <- c("Shawn", "O'Neil")
+print(values)
+```
+
+The printout shows (not very nicely-formatted) that the vector has a `"created_by"` attribute as well as the contents of that attribute. 
+
+The names of a named vector are stored in a `"names"` attribute - R looks for this particular attribute to determine if a vector is a named vector. We can thus set names in one of two ways, with the first option
+actually running the second option behind the scenes. 
+
+```{r vec3_11, exercise = TRUE}
+ages <- c(20, 30, 40, 50, 60)
+
+# option 1
+names(ages) <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+
+# option 2
+attr(ages, "names") <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+
+print(ages)
+```
+
+The first option is generally preferred, however, because it (and other functions that work with common attributes) sometimes perform extra checks to ensure the attribute is set properly.
+
+
+
+### Subsetting by Logical
+
+The third way to subset vectors and replace subsets within vectors is with a *logical* index vector. Although this is perhaps the simplest option, it is also one of the most powerful as we'll see. Let's again grab the second and third entries of both vectors, this time with a logical indexing vector.
+
+```{r vec3_10, exercise = TRUE}
+people <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+ages <- c(20, 30, 40, 50, 60)
+
+subset_people <- people[c(FALSE, TRUE, TRUE, FALSE, FALSE)]
+subset_ages <- ages[c(FALSE, TRUE, TRUE, FALSE, FALSE)]
+
+print(subset_people)
+print(subset_ages)
+```
+
+Here our selection vector is the same length as the vector we're subsetting and contains `TRUE` for every element we want to include. This is the most common usage, though vector recycling works here as well. Here's an example of grabbing every-other element, by recycling a `c(TRUE, FALSE)` selection vector over the length of the one we're selecting from. 
+
+```{r vec3_10, exercise = TRUE}
+values <- c(10, 20, 30, 40, 50, 60)
+
+subset_values <- people[c(TRUE, FALSE)]
+
+print(subset_values)
+```
+
+Unlike subsetting by numeric index vector (by index number) or character vector (by name), subsetting by logical vector doesn't let us change the order of elements as they are subset. 
+
+OF course, can replace entries in vectors this way:
+
+
+```{r vec3_10, exercise = TRUE}
+people <- c("Kim", "Joe", "Abby", "Bobby", "Linus")
+
+people[c(FALSE, TRUE, TRUE, FALSE, FALSE)] <- c("Joseph", "Abby")
+
+print(people)
+```
+
+And, again, recycling would be used if we had more `TRUE` entries in our indexing vector than our replacement vector of names. 
+
+
+### The Power of Logic
+
+When combined with logical and vectorized operations, subsetting by logical vector is a powerful tool for data analysis. 
+
+Suppose we had a sample of random values as a numeric vector, `samp`. Further, we want to get another vector of all the values that are larger than the median. First, we'll compute a logical vector indicating which are larger than the median with `gt_median <- samp > median(samp)`. Note that this uses recycling, since `median(samp)` is a vector of length 1, while `samp` is longer. This line will produce a logical vector with `TRUE` wherever the element is larger than the median; this logical vector can then be used to select the subset of interest.
+
+```{r vec3_10, exercise = TRUE}
+samp <- rnorm(15, mean = 10, sd = 2)
+print(samp)
+
+gt_median <- samp > median(samp)
+
+print("Subsampling:")
+subsamp <- samp[gt_median]
+print(subsamp)
+```
+
+R syntax is very "nestable," so we can rewrite the above without an intermediary variable to store the logical vector.
+
+```{r vec3_10, exercise = TRUE}
+samp <- rnorm(15, mean = 10, sd = 2)
+print(samp)
+
+print("Subsampling:")
+subsamp <- samp[samp > median(samp)]
+print(subsamp)
+```
+
+The syntax `samp[samp > median(samp)]` even reads nicely as "entries of samp where samp is greater than the median of samp." Taken to extremes nested R syntax can be very hard to read. On the other hand, excessive lines for temporary variables that are only used once also clutter up code, so we try to strike a balance in readability. 
+
+Here's another example, starting with a random sample from an exponential distribution, and a quick histogram produced with the `hist()` function. We also print the values, the mean, and the median. 
+
+```{r vec3_10, exercise = TRUE}
+samp <- rexp(40, rate = 2)
+hist(samp)
+
+print(samp)
+print(mean(samp))
+print(median(samp))
+```
+
+
+In a sample from an exponential distribution, the mean of the sample is usually larger than the median. Let's try and get all of the numbers that are at least as large as the median, and less than or equal to the mean. 
+
+The "and" there indicates that we'll use a logical `&` to combine two logical vectors; one indicating which entries are at least as large as the median (`samp >= median(samp)`) and the 
+
+
+
+
+
+
+
+
+
+
